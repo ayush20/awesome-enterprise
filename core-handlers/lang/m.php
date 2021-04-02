@@ -235,7 +235,7 @@ function _number_format($value, $atts){
 	return $value;
 }
 
-//money_format
+//tt
 \aw2_library::add_service('m.money_format','Format the value as Money and return. Use m.money_format="<format>"',['func'=>'_money_format','namespace'=>__NAMESPACE__]);
 function _money_format($value, $atts){
 	$format = $atts['money_format'];
@@ -245,9 +245,10 @@ function _money_format($value, $atts){
 	if($format=="yes"){
 		$format = 'en_IN';
 	}
-	setlocale(LC_MONETARY, $format);
-    $value = money_format('%!i', (float)$value);
-	$value =str_replace('.00','',$value);
+	
+	$fmt = new \NumberFormatter( $format, \NumberFormatter::CURRENCY );
+	$value = $fmt->formatCurrency($value, "INR");
+	$value = str_replace('.00','',$value);
 	return $value;
 }
 
